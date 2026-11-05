@@ -151,7 +151,7 @@ fun SwipeHint() {
     Canvas(Modifier.fillMaxSize()) {
         val u = size.width / 100f
         val y = size.height * 0.92f
-        val color = Color.White.copy(alpha = 0.85f)
+        val color = Color(0xCCFF5C9E)
         val shift = nudge * 3 * u
         for (side in listOf(-1f, 1f)) {
             val tipX = size.width / 2 + side * (40 * u + shift)
@@ -214,11 +214,11 @@ private fun Meadow() {
         val hill = w * 1.8f
         drawOval(
             Color(0xFF80D959),
-            Offset((w - hill) / 2, h * 0.47f),
+            Offset((w - hill) / 2, h * 0.22f),
             Size(hill, h * 0.95f),
         )
         val sun = Offset(w * 0.82f, h * 0.1f)
-        drawCircle(Color(0x55FFE066), w * 0.14f, sun)
+        drawCircle(Color(0x66FFFFFF), w * 0.14f, sun)
         drawCircle(Color(0xFFFFD93D), w * 0.09f, sun)
         val cloudY = h * 0.13f
         for ((x, r) in listOf(0.33f to 0.05f, 0.42f to 0.07f, 0.51f to 0.055f)) {
@@ -482,7 +482,7 @@ private fun DraggableFood(
     val currentDrop by rememberUpdatedState(onDrop)
     val half = with(LocalDensity.current) { size.toPx() / 2 }
     val scale by animateFloatAsState(
-        targetValue = if (isEaten) 0.01f else if (isHeld) 1.15f else 1f,
+        targetValue = if (isEaten) 0f else if (isHeld) 1.15f else 1f,
         animationSpec = spring(dampingRatio = 0.6f),
         label = "food scale",
     )

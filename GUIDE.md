@@ -2,7 +2,7 @@
 
 You don't need a Mac or Xcode for this. GitHub's online Macs build the app, and a Windows tool called Sideloadly installs it on your iPhone. Allow an hour or two the first time.
 
-**The code hasn't been compiled yet.** Part 2 is its first real build, so it may stop with an error or two. If it does, paste the red message to Claude and it can be fixed.
+The online build compiles the app for you. If you ever change the code and it stops with an error, paste the red message to Claude and it can be fixed.
 
 ## What you need
 
@@ -155,18 +155,31 @@ The app finds files by name, so spelling matters. Use all lowercase. Any file yo
 
 ---
 
-## Later: the Android version
+## The Android version
 
-The game logic carries over directly. Only the platform-specific pieces change, and Android apps can be built on Windows:
+The Android app lives in the `android` folder. GitHub builds it and plays it on an emulator each time it changes. You don't need Android Studio, and there's no 7-day limit.
 
-| iPhone (this project) | Android equivalent |
-|---|---|
-| SwiftUI views | Jetpack Compose, which is structured very similarly |
-| `GameState` | a `ViewModel`, with `SharedPreferences` or DataStore for settings |
-| `TouchRouter` watching the window | root-level `pointerInput` using `PointerEventPass.Initial` |
-| `isIdleTimerDisabled` | `FLAG_KEEP_SCREEN_ON` |
-| Guided Access | Screen pinning, which the app can request with `startLockTask()` |
-| `AVSpeechSynthesizer` | `TextToSpeech` |
-| `AVAudioPlayer` | `SoundPool` |
+### Install it
 
-Your pictures and sounds can be reused as they are, and the animal list is one small table in `Animals.swift`. Emoji will look different on Android, so adding your own pictures keeps the two versions matching.
+1. Copy `Documents\KittyPlay-app\KittyPlay.apk` to the phone, by USB cable or Google Drive.
+2. On the phone, tap the file in the Files app.
+3. If Android asks, allow that app to install unknown apps, and confirm. If Play Protect warns about an unknown developer, choose to install anyway. That's expected for an app you built yourself.
+4. Open **Kitty Play**. Android may show a one-time "Viewing full screen" message, so tap **Got it**. Then choose your parent PIN.
+
+### Lock the phone with screen pinning
+
+1. In Settings, search for "pin". Depending on the phone, it's called App pinning, Screen pinning or Pin app. Turn it on.
+2. Also turn on **Ask for PIN before unpinning** (or similar), so only you can leave.
+3. In the game, tap **Pin this game and play**, or use **Pin this game now** in the parent menu, and accept the phone's message.
+4. To finish, open the parent menu and tap **Unpin this game**.
+
+### Differences from the iPhone version
+
+- The animals are drawn rather than emoji, and the animal sounds are generated rather than spoken.
+- The app has an icon, and arrows appear if she stays on one game for a while.
+- The app has no internet permission, so it can't go online.
+- Custom sounds go in `android/app/src/main/assets/media`, using the names in Part 7. Custom pictures aren't supported yet.
+
+### Updating it
+
+Until the app has a permanent signing key, each new build uses a different key. To install an update, uninstall the old version first, which resets the PIN and settings.

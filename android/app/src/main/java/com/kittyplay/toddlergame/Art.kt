@@ -286,13 +286,14 @@ fun BigCatArt(modifier: Modifier = Modifier, eyesClosed: Boolean = false, isHapp
             // Ears
             tri(fur, 13f, 34f, 18f, 3f, 42f, 20f)
             tri(fur, 87f, 34f, 82f, 3f, 58f, 20f)
-            tri(Blush, 21f, 25f, 22f, 11f, 33f, 19f)
-            tri(Blush, 79f, 25f, 78f, 11f, 67f, 19f)
+            // (Inner ears are drawn after the head, so it doesn't cover them.)
             // Head
             oval(fur, 50f, 34f, 74f, 60f)
             line(stripe, 41f, 9f, 41f, 17f, 3.5f)
             line(stripe, 50f, 7f, 50f, 17f, 3.5f)
             line(stripe, 59f, 9f, 59f, 17f, 3.5f)
+            tri(Blush, 19f, 22f, 20f, 8f, 31f, 15f)
+            tri(Blush, 81f, 22f, 80f, 8f, 69f, 15f)
             // Face
             eyes(29f, eyesClosed, gap = 16f, size = 7.5f)
             cheeks(41f, 25f)
