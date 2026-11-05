@@ -1,0 +1,45 @@
+name: Build iPhone app
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Create the Xcode project
+        run: xcodegen generate
+
+      - name: Compile the app
+        run: |
+          xcodebuild build \
+            -quiet \
+            -project KittyPlay.xcodeproj \
+            -scheme KittyPlay \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      # The app is unsigned here. Sideloadly signs it on your PC with your Apple ID.
+      - name: Package the app
+        run: |
+          mkdir Payload
+          cp -R build/Build/Products/Release-iphoneos/KittyPlay.app Payload/
+          zip -qr KittyPlay.ipa Payload
+
+      - name: Save the app for download
+        uses: actions/upload-artifact@v4
+        with:
+          name: KittyPlay-app
+          path: KittyPlay.ipa
+          if-no-files-found: error
