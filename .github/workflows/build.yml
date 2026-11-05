@@ -2,6 +2,10 @@ name: Build iPhone app
 
 on:
   push:
+    paths:
+      - "KittyPlay/**"
+      - "project.yml"
+      - ".github/workflows/build.yml"
   workflow_dispatch:
 
 jobs:
