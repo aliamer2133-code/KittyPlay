@@ -94,12 +94,17 @@ def hold_corner():
 
 adb("install", "-r", apk)
 adb("logcat", "-c", check=False)
-size = re.search(r"(\d+)x(\d+)", adb("shell", "wm", "size"))
+# Android's one-time "Viewing full screen" notice would cover the first screen.
+adb("shell", "settings", "put", "secure", "immersive_mode_confirmations", "confirmed", check=False)
+size =re.search(r"(\d+)x(\d+)", adb("shell", "wm", "size"))
 width, height = int(size.group(1)), int(size.group(2))
 print(f"screen {width}x{height}")
 
 adb("shell", "am", "start", "-W", "-n", f"{PACKAGE}/.MainActivity")
 time.sleep(4)
+if has_text("Got it"):
+    tap_text("Got it")
+    time.sleep(1)
 
 # First launch
 shot("choose_pin")
