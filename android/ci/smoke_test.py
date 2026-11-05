@@ -24,8 +24,21 @@ def adb(*args, check=True):
     return done.stdout
 
 
+def dismiss_system_dialogs():
+    """A slow emulator's own apps can freeze. That dialog isn't about this game."""
+    dialog = adb("shell", "dumpsys", "window", check=False)
+    if "Application Not Responding" in dialog or "Not Responding" in dialog:
+        print("dismissing a system 'not responding' dialog")
+        for label, x1, y1, x2, y2 in raw_nodes():
+            if label == "Wait":
+                tap((int(x1) + int(x2)) / 2, (int(y1) + int(y2)) / 2)
+                time.sleep(1)
+                break
+
+
 def shot(name):
     global number
+    dismiss_system_dialogs()
     number += 1
     path = shots / f"{number:02d}_{name}.png"
     with path.open("wb") as out:
@@ -42,6 +55,11 @@ def swipe(x1, y1, x2, y2, ms=300):
 
 
 def screen_nodes():
+    dismiss_system_dialogs()
+    return raw_nodes()
+
+
+def raw_nodes():
     for _ in range(5):
         adb("shell", "uiautomator", "dump", "/sdcard/ui.xml", check=False)
         xml = adb("exec-out", "cat", "/sdcard/ui.xml", check=False)
